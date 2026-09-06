@@ -1,0 +1,31 @@
+plugins {
+    id "idea"
+    id "java"
+}
+
+ext {
+    junitVersion = "5.7.0"
+}
+
+sourceCompatibility = "17"
+targetCompatibility = "17"
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+}
+
+test {
+    useJUnitPlatform()
+}
