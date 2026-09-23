@@ -1,0 +1,25 @@
+2026-03-05 09:10:21 INFO Authentication attempt login=romanow email=romanow@example.com
+2026-03-05 09:10:25 INFO Successful authentication login=testadmin email=testadmin@corp.local
+2026-03-05 09:11:03 INFO New customer registered name=Гогия Владимир email=vladimir.gogia@example.com
+2026-03-05 09:11:45 INFO Payment initiated login=romanow card=4111 1111 1111 1234
+2026-03-05 09:12:02 INFO Payment confirmed login=testadmin card=5500 0000 0000 9999
+2026-03-05 09:12:18 INFO Profile updated name=Романов Алексей Сергеевич email=alexey.romanov@example.com
+2026-03-05 09:12:44 WARN Suspicious login detected login=admin email=admin@example.com
+2026-03-05 09:13:10 INFO Password reset requested login=developer01 email=dev01@company.org
+2026-03-05 09:13:41 INFO Card linked login=romanow card=4000 1234 5678 9010
+2026-03-05 09:14:02 INFO Customer verification name=Иванов Иван Петрович email=ivanov@example.ru
+2026-03-05 09:14:18 INFO Transaction started login=testadmin card=4444 3333 2222 1111
+2026-03-05 09:14:51 INFO Email changed login=romanow email=romanow.new@example.com email=backup.romanow@example.org
+2026-03-05 09:15:07 ERROR Failed payment login=developer01 card=5105 1051 0510 5100
+2026-03-05 09:15:29 INFO Support request login=admin email=admin@support.example
+2026-03-05 09:16:02 INFO Customer created name=Петров Сергей email=sergey.petrov@example.org
+2026-03-05 09:16:18 INFO New payment card=4012 8888 8888 1881 login=testadmin
+2026-03-05 09:16:41 INFO Profile imported name=Сидоров Павел Анатольевич email=pavel.sidorov@example.net
+2026-03-05 09:17:03 WARN Multiple login attempts login=romanow2 email=romanow@corp.example
+2026-03-05 09:17:25 INFO Card verification card=6011 0009 9013 9424 login=developer01
+2026-03-05 09:17:55 INFO User activity login=superadmin email=root.admin@example.com
+2026-03-05 09:18:10 INFO Account merge login=user01 login=user02 email=user01@example.com email=user02@example.com
+2026-03-05 09:18:41 INFO Payment retry card=4111 1111 1111 1234 card=5555 4444 3333 2222 login=testadmin
+2026-03-05 09:19:02 INFO Profile update name=Иванова Мария email=maria.ivanova@example.ru login=maria1988
+2026-03-05 09:19:37 WARN Suspicious activity email=hacker@example.com login=hacker007
+2026-03-05 09:20:11 INFO Customer verification name=Кузнецов Дмитрий Олегович email=d.kuznetsov@example.com card=4000 0000 0000 0002
