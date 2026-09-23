@@ -1,0 +1,25 @@
+2026-03-05 09:10:21 INFO Authentication attempt login=r****** email=r***@example.com
+2026-03-05 09:10:25 INFO Successful authentication login=te***n email=t***@corp.local
+2026-03-05 09:11:03 INFO New customer registered name=Г**** Владимир email=v***@example.com
+2026-03-05 09:11:45 INFO Payment initiated login=r****** card=4111 11** **** 1234
+2026-03-05 09:12:02 INFO Payment confirmed login=te***n card=5500 00** **** 9999
+2026-03-05 09:12:18 INFO Profile updated name=Р****** Алексей Се***ч email=a***@example.com
+2026-03-05 09:12:44 WARN Suspicious login detected login=a**** email=a***@example.com
+2026-03-05 09:13:10 INFO Password reset requested login=de***1 email=d***@company.org
+2026-03-05 09:13:41 INFO Card linked login=r****** card=4000 12** **** 9010
+2026-03-05 09:14:02 INFO Customer verification name=И***** Иван Пе***ч email=i***@example.ru
+2026-03-05 09:14:18 INFO Transaction started login=te***n card=4444 33** **** 1111
+2026-03-05 09:14:51 INFO Email changed login=r****** email=r***@example.com email=b***@example.org
+2026-03-05 09:15:07 ERROR Failed payment login=de***1 card=5105 10** **** 5100
+2026-03-05 09:15:29 INFO Support request login=a**** email=a***@support.example
+2026-03-05 09:16:02 INFO Customer created name=П***** Сергей email=s***@example.org
+2026-03-05 09:16:18 INFO New payment card=4012 88** **** 1881 login=te***n
+2026-03-05 09:16:41 INFO Profile imported name=С****** Павел Ан***ч email=p***@example.net
+2026-03-05 09:17:03 WARN Multiple login attempts login=ro***2 email=r***@corp.example
+2026-03-05 09:17:25 INFO Card verification card=6011 00** **** 9424 login=de***1
+2026-03-05 09:17:55 INFO User activity login=su***n email=r***@example.com
+2026-03-05 09:18:10 INFO Account merge login=u***** login=u***** email=u***@example.com email=u***@example.com
+2026-03-05 09:18:41 INFO Payment retry card=4111 11** **** 1234 card=5555 44** **** 2222 login=te***n
+2026-03-05 09:19:02 INFO Profile update name=И****** Мария email=m***@example.ru login=ma***8
+2026-03-05 09:19:37 WARN Suspicious activity email=h***@example.com login=ha***7
+2026-03-05 09:20:11 INFO Customer verification name=Ку***в Дмитрий Ол***ч email=d***@example.com card=4000 00** **** 0002
