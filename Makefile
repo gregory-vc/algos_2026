@@ -1,4 +1,4 @@
-.PHONY: test task_1 task_2 task_3 task_4 task_5 task_6 task_7 task_9
+.PHONY: test task_1 task_2 task_3 task_4 task_5 task_6 task_7 task_8 task_9
 
 task_1:
 	go test -v ./task_1 -count=1
@@ -20,6 +20,9 @@ task_6:
 
 task_7:
 	go test -v ./task_7 -count=1
+
+task_8:
+	go test -v ./task_8 -count=1
 
 task_9:
 	go test -v ./task_9 -count=1
