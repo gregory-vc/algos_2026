@@ -16,17 +16,17 @@ func TestOrderServiceCalc(t *testing.T) {
 	tests := []struct {
 		name         string
 		items        []task14.Item
-		customerType string
+		customerType task14.CustomerType
 		want         float64
 	}{
 		{
 			name: "nil_basket", customerType: "REGULAR", want: 0,
 		},
 		{
-			name: "nil_basket_vip", customerType: "VIP", want: 0,
+			name: "nil_basket_vip", customerType: task14.CustomerVIP, want: 0,
 		},
 		{
-			name: "nil_basket_new", customerType: "NEW", want: 0,
+			name: "nil_basket_new", customerType: task14.CustomerNew, want: 0,
 		},
 		{
 			name: "empty_basket", items: []task14.Item{}, customerType: "REGULAR", want: 0,
@@ -35,10 +35,10 @@ func TestOrderServiceCalc(t *testing.T) {
 			name: "regular_customer", items: basket, customerType: "REGULAR", want: 400,
 		},
 		{
-			name: "vip_customer", items: basket, customerType: "VIP", want: 360,
+			name: "vip_customer", items: basket, customerType: task14.CustomerVIP, want: 360,
 		},
 		{
-			name: "new_customer", items: basket, customerType: "NEW", want: 380,
+			name: "new_customer", items: basket, customerType: task14.CustomerNew, want: 380,
 		},
 		{
 			name: "unknown_customer", items: basket, customerType: "UNKNOWN", want: 400,
@@ -95,19 +95,19 @@ func TestOrderServiceCalc(t *testing.T) {
 		},
 		{
 			name: "vip_discount_reduces_total_below_threshold", items: []task14.Item{task14.NewItem("Товар", 1100, 1)},
-			customerType: "VIP", want: 990,
+			customerType: task14.CustomerVIP, want: 990,
 		},
 		{
 			name: "new_discount_reduces_total_below_threshold", items: []task14.Item{task14.NewItem("Товар", 1050, 1)},
-			customerType: "NEW", want: 997.5,
+			customerType: task14.CustomerNew, want: 997.5,
 		},
 		{
 			name: "vip_then_fixed_discount", items: []task14.Item{task14.NewItem("Товар", 1200, 1)},
-			customerType: "VIP", want: 1030,
+			customerType: task14.CustomerVIP, want: 1030,
 		},
 		{
 			name: "new_then_fixed_discount", items: []task14.Item{task14.NewItem("Товар", 1200, 1)},
-			customerType: "NEW", want: 1090,
+			customerType: task14.CustomerNew, want: 1090,
 		},
 	}
 
@@ -130,7 +130,7 @@ func TestOrderServiceCalcDoesNotModifyItems(t *testing.T) {
 	original := slices.Clone(items)
 	service := task14.OrderService{}
 
-	for _, customerType := range []string{"REGULAR", "VIP", "NEW"} {
+	for _, customerType := range []task14.CustomerType{"REGULAR", task14.CustomerVIP, task14.CustomerNew} {
 		service.Calc(items, customerType)
 		if !slices.Equal(items, original) {
 			t.Fatalf("Calc() changed items for customer type %q", customerType)

@@ -1,5 +1,30 @@
 package task14
 
+type CustomerType string
+
+type (
+	DiscountRate      float64
+	DiscountThreshold float64
+	DiscountAmount    float64
+)
+
+const (
+	CustomerVIP CustomerType = "VIP"
+	CustomerNew CustomerType = "NEW"
+)
+
+const (
+	vipDiscountRate        DiscountRate      = 0.1
+	newDiscountRate        DiscountRate      = 0.05
+	fixedDiscountThreshold DiscountThreshold = 1000
+	fixedDiscountAmount    DiscountAmount    = 50
+)
+
+var customerDiscountRates = map[CustomerType]DiscountRate{
+	CustomerVIP: vipDiscountRate,
+	CustomerNew: newDiscountRate,
+}
+
 type OrderService struct{}
 
 // Calc возвращает стоимость заказа с учетом скидок.
@@ -9,23 +34,28 @@ type OrderService struct{}
 // Для остальных типов клиентов процентной скидки нет.
 // Если сумма после скидки больше 1000, из нее вычитается 50.
 // Если items пустой или равен nil, возвращается 0.
-func (OrderService) Calc(items []Item, customerType string) float64 {
-	var s float64
-	for _, i := range items {
-		s += i.Price() * float64(i.Quantity())
-	}
+func (OrderService) Calc(items []Item, customerType CustomerType) float64 {
+	total := calculateSubtotal(items)
+	total = applyCustomerDiscount(total, customerType)
+	return applyFixedDiscount(total)
+}
 
-	if customerType == "VIP" {
-		s = s * 0.9
+func calculateSubtotal(items []Item) float64 {
+	var subtotal float64
+	for _, item := range items {
+		subtotal += item.Price() * float64(item.Quantity())
 	}
+	return subtotal
+}
 
-	if customerType == "NEW" {
-		s = s * 0.95
+func applyCustomerDiscount(total float64, customerType CustomerType) float64 {
+	discount := customerDiscountRates[customerType]
+	return total * (1 - float64(discount))
+}
+
+func applyFixedDiscount(total float64) float64 {
+	if total > float64(fixedDiscountThreshold) {
+		return total - float64(fixedDiscountAmount)
 	}
-
-	if s > 1000 {
-		s = s - 50
-	}
-
-	return s
+	return total
 }
