@@ -1,0 +1,139 @@
+package task14_test
+
+import (
+	"math"
+	"slices"
+	"testing"
+
+	task14 "github.com/gregory-vc/algos_2026/task_14"
+)
+
+func TestOrderServiceCalc(t *testing.T) {
+	basket := []task14.Item{
+		task14.NewItem("Книга", 100, 2),
+		task14.NewItem("Игра", 200, 1),
+	}
+	tests := []struct {
+		name         string
+		items        []task14.Item
+		customerType string
+		want         float64
+	}{
+		{
+			name: "nil_basket", customerType: "REGULAR", want: 0,
+		},
+		{
+			name: "nil_basket_vip", customerType: "VIP", want: 0,
+		},
+		{
+			name: "nil_basket_new", customerType: "NEW", want: 0,
+		},
+		{
+			name: "empty_basket", items: []task14.Item{}, customerType: "REGULAR", want: 0,
+		},
+		{
+			name: "regular_customer", items: basket, customerType: "REGULAR", want: 400,
+		},
+		{
+			name: "vip_customer", items: basket, customerType: "VIP", want: 360,
+		},
+		{
+			name: "new_customer", items: basket, customerType: "NEW", want: 380,
+		},
+		{
+			name: "unknown_customer", items: basket, customerType: "UNKNOWN", want: 400,
+		},
+		{
+			name: "empty_customer_type", items: basket, customerType: "", want: 400,
+		},
+		{
+			name: "customer_type_is_case_sensitive", items: basket, customerType: "vip", want: 400,
+		},
+		{
+			name: "fractional_prices",
+			items: []task14.Item{
+				task14.NewItem("Тетрадь", 19.99, 3),
+				task14.NewItem("Ручка", 0.1, 2),
+			},
+			customerType: "REGULAR", want: 60.17,
+		},
+		{
+			name: "zero_quantity",
+			items: []task14.Item{
+				task14.NewItem("Книга", 100, 0),
+				task14.NewItem("Игра", 200, 1),
+			},
+			customerType: "REGULAR", want: 200,
+		},
+		{
+			name: "free_item", items: []task14.Item{task14.NewItem("Подарок", 0, 3)},
+			customerType: "REGULAR", want: 0,
+		},
+		{
+			name: "below_fixed_discount_threshold", items: []task14.Item{task14.NewItem("Товар", 999.99, 1)},
+			customerType: "REGULAR", want: 999.99,
+		},
+		{
+			name: "at_fixed_discount_threshold", items: []task14.Item{task14.NewItem("Товар", 1000, 1)},
+			customerType: "REGULAR", want: 1000,
+		},
+		{
+			name: "just_above_fixed_discount_threshold", items: []task14.Item{task14.NewItem("Товар", 1000.01, 1)},
+			customerType: "REGULAR", want: 950.01,
+		},
+		{
+			name: "fixed_discount_applied_once_to_entire_basket",
+			items: []task14.Item{
+				task14.NewItem("Книга", 300, 2),
+				task14.NewItem("Игра", 300, 2),
+			},
+			customerType: "REGULAR", want: 1150,
+		},
+		{
+			name: "unknown_customer_still_gets_fixed_discount", items: []task14.Item{task14.NewItem("Товар", 1200, 1)},
+			customerType: "UNKNOWN", want: 1150,
+		},
+		{
+			name: "vip_discount_reduces_total_below_threshold", items: []task14.Item{task14.NewItem("Товар", 1100, 1)},
+			customerType: "VIP", want: 990,
+		},
+		{
+			name: "new_discount_reduces_total_below_threshold", items: []task14.Item{task14.NewItem("Товар", 1050, 1)},
+			customerType: "NEW", want: 997.5,
+		},
+		{
+			name: "vip_then_fixed_discount", items: []task14.Item{task14.NewItem("Товар", 1200, 1)},
+			customerType: "VIP", want: 1030,
+		},
+		{
+			name: "new_then_fixed_discount", items: []task14.Item{task14.NewItem("Товар", 1200, 1)},
+			customerType: "NEW", want: 1090,
+		},
+	}
+
+	service := task14.OrderService{}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := service.Calc(tt.items, tt.customerType)
+			if math.Abs(got-tt.want) > 1e-9 {
+				t.Errorf("Calc() = %g, want %g", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestOrderServiceCalcDoesNotModifyItems(t *testing.T) {
+	items := []task14.Item{
+		task14.NewItem("Книга", 300, 2),
+		task14.NewItem("Игра", 300, 2),
+	}
+	original := slices.Clone(items)
+	service := task14.OrderService{}
+
+	for _, customerType := range []string{"REGULAR", "VIP", "NEW"} {
+		service.Calc(items, customerType)
+		if !slices.Equal(items, original) {
+			t.Fatalf("Calc() changed items for customer type %q", customerType)
+		}
+	}
+}
