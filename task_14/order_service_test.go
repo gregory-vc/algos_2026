@@ -122,6 +122,86 @@ func TestOrderServiceCalc(t *testing.T) {
 	}
 }
 
+func TestOrderServiceCalcQuantityDiscount(t *testing.T) {
+	basketWithEmptyPositions := make([]task14.Item, 11)
+	basketWithEmptyPositions[0] = task14.NewItem("Книга", 50, 10)
+
+	tests := []struct {
+		name         string
+		items        []task14.Item
+		customerType task14.CustomerType
+		want         float64
+	}{
+		{
+			name:         "ten_units_without_quantity_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 50, 10)},
+			customerType: "REGULAR", want: 500,
+		},
+		{
+			name:         "eleven_units_in_one_position",
+			items:        []task14.Item{task14.NewItem("Книга", 50, 11)},
+			customerType: "REGULAR", want: 544.5,
+		},
+		{
+			name: "eleven_units_in_two_positions",
+			items: []task14.Item{
+				task14.NewItem("Книга", 50, 5),
+				task14.NewItem("Игра", 50, 6),
+			},
+			customerType: "REGULAR", want: 544.5,
+		},
+		{
+			name:         "eleven_positions_but_ten_units",
+			items:        basketWithEmptyPositions,
+			customerType: "REGULAR", want: 500,
+		},
+		{
+			name:         "ten_units_with_fixed_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 200, 10)},
+			customerType: "REGULAR", want: 1950,
+		},
+		{
+			name:         "ten_units_with_vip_and_fixed_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 200, 10)},
+			customerType: task14.CustomerVIP, want: 1750,
+		},
+		{
+			name:         "ten_units_with_new_and_fixed_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 200, 10)},
+			customerType: task14.CustomerNew, want: 1850,
+		},
+		{
+			name:         "quantity_discount_after_fixed_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 100, 20)},
+			customerType: "REGULAR", want: 1930.5,
+		},
+		{
+			name:         "quantity_discount_after_vip_and_fixed_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 100, 20)},
+			customerType: task14.CustomerVIP, want: 1732.5,
+		},
+		{
+			name:         "quantity_discount_after_new_and_fixed_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 100, 20)},
+			customerType: task14.CustomerNew, want: 1831.5,
+		},
+		{
+			name:         "unknown_customer_gets_quantity_discount",
+			items:        []task14.Item{task14.NewItem("Книга", 50, 11)},
+			customerType: "UNKNOWN", want: 544.5,
+		},
+	}
+
+	service := task14.OrderService{}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := service.Calc(tt.items, tt.customerType); got != tt.want {
+				t.Errorf("Calc() = %g, want %g", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestOrderServiceCalcDoesNotModifyItems(t *testing.T) {
 	items := []task14.Item{
 		task14.NewItem("Книга", 300, 2),
